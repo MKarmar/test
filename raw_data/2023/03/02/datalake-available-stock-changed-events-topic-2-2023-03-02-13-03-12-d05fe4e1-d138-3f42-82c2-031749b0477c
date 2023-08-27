@@ -1,0 +1,2 @@
+{"version":1,"type":"AvailableStockChangedEvent","timestamp":"2023-03-02T13:03:12.797Z","payload":{"changed":[{"id":39351,"sku":"WKF158W","availableStockLevel":55,"location":"LOG"}]},"boundedContext":"StockReservations"}
+{"version":1,"type":"AvailableStockChangedEvent","timestamp":"2023-03-02T13:04:02.703Z","payload":{"changed":[{"id":34705,"sku":"SN47YS02CS","availableStockLevel":64,"location":"ESK"},{"id":31516,"sku":"SN47YS02CS","availableStockLevel":0,"location":"LOG"}]},"boundedContext":"StockReservations"}
