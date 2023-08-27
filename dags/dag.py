@@ -38,30 +38,22 @@ def create_dag():
     '''
     validate_input_towards_JSON = DummyOperator(task_id='validate_input_towards_JSON')
     
-    if_valid_json = DummyOperator(task_id='if_valid_json')
-    
-    if_not_valid_json = DummyOperator(task_id='if_not_valid_json')
-    
-    generate_new_json_schema = DummyOperator(task_id='generate_new_json_schema')
+    if_not_valid_json = DummyOperator(task_id='if_not_valid_json') #generate new JSON schema
 
     notify_schema_change = DummyOperator(task_id='notify_schema_change')
-
-    generate_new_json_schema = DummyOperator(task_id='generate_new_json_schema')
     
     '''
     This set of operations is to ensure good data quality before data is releases. Data entries with questionable data quality will be stored in individual data set, but will follow
     the same data model as the validated data, in order for users to unify the data, if there is a need for doing so.
     '''
-    validate_against_erp = DummyOperator(task_id='validate_against_erp') #ensure that ID's, SKU's and locations are correct in the individual records
-    number_validation = DummyOperator(task_id='number_validation') #ensure that availableStockLevel values are of correct type (i.e. non negative integers)
-    split_datasets = DummyOperator(task_id='split_datasets')
-    write_data = DummyOperator(task_id='write_data')
+    data_quality_assessed = DummyOperator(task_id='validate_against_erp') #ensure that ID's, SKU's and locations are correct in the individual records, ensure that availableStockLevel values are of correct type (i.e. non negative integers) and write them into two pools
+
 
 
     
     release_dataset = DummyOperator(task_id='release_dataset')
     
-    _ = wait_for_full_data >> validate_input_towards_JSON >> if_valid_json >>validate_against_erp>>number_validation>>split_datasets>>write_data
-    _ = validate_input_towards_JSON >> if_not_valid_json >> generate_new_json_schema >> notify_schema_change >> generate_new_json_schema
+    _ = wait_for_full_data >> validate_input_towards_JSON >> data_quality_assessed>>release_dataset
+    _ = validate_input_towards_JSON >> if_not_valid_json >> notify_schema_change >> data_quality_assessed
 
 dag = create_dag()
