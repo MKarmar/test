@@ -1,7 +1,6 @@
 from jsonschema import validate
 from os import listdir
 import json
-import jsonschema
 
 def test_json_validity(paths = ['raw_data/2023/03/01/datalake-available-stock-changed-events-topic-2-2023-03-01-13-01-19-b7c0359b-e55f-3af9-83b4-ef036ff3f0c1'], relative_schema_path = '.schema/stock/'):
     schema_file_list = listdir(relative_schema_path) #list the schemas in relative schema path
