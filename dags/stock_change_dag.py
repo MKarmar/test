@@ -4,7 +4,9 @@ from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.operators.weekday import BranchDayOfWeekOperator
 from airflow.sensors.time_delta import TimeDeltaSensor
+from airflow.operators.python import PythonOperator
 from datetime import timedelta, datetime
+from validate_json import test_json_validity
 
 default_args = {
     'owner': 'data_engineering_squad',
@@ -32,4 +34,9 @@ with DAG(
                                          poke_interval=timedelta(minutes=10).total_seconds(),
                                          mode='reschedule')
     
+    validate_json = PythonOperator(
+            task_id = 'validate_json',
+            python_callable=test_json_validity()
+    )
+
     wait_for_full_data >>dummy_task_1>>dummy_task_2
