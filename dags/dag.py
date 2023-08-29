@@ -2,6 +2,7 @@ from datetime import timedelta, datetime
 from airflow.decorators import dag
 from airflow.operators.dummy import DummyOperator
 from airflow.sensors.time_delta import TimeDeltaSensor
+from initial_json_schema import schema_builder_incremental
 
 default_args = {
     'owner': 'data_engineering_squad',
@@ -40,7 +41,7 @@ def create_dag():
     
     if_not_valid_json = DummyOperator(task_id='if_not_valid_json') #generate new JSON schema
 
-    notify_schema_change = DummyOperator(task_id='notify_schema_change')
+    notify_schema_change = DummyOperator(task_id='notify_schema_change') #should be replaced with suitable notification task, but will not be done to avoid spam for the test
     
     '''
     This set of operations is to ensure good data quality before data is releases. Data entries with questionable data quality will be stored in individual data set, but will follow
@@ -51,7 +52,7 @@ def create_dag():
 
 
     
-    release_dataset = DummyOperator(task_id='release_dataset')
+    release_dataset = DummyOperator(task_id='release_dataset') 
     
     _ = wait_for_full_data >> validate_input_towards_JSON >> data_quality_assessed>>release_dataset
     _ = validate_input_towards_JSON >> if_not_valid_json >> notify_schema_change >> data_quality_assessed
