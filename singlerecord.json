@@ -1,1 +1,0 @@
-{"version":"1","type":"AvailableStockChangedEvent","timestamp":"2023-03-01T13:01:27.660Z","payload":{"changed":[{"id":4723,"sku":"HD9867/90","availableStockLevel":36,"location":"PCN"}]},"boundedContext":"StockReservations"}
